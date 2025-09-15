@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>App de Notas</title>
+  <style>
+    body{background:#071129;color:#e6eef8;font-family:Inter,Segoe UI,Roboto,sans-serif;padding:24px}
+    .wrap{max-width:900px;margin:0 auto}
+    h1{margin-bottom:12px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:50px}
+    textarea{width:100%;height:300px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    ul{list-style:none;padding:0;margin:0;max-height:300px;overflow:auto}
+    li{padding:8px;border-radius:6px;background:rgba(255,255,255,0.02);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+    button{background:#E10600;border:none;color:#fff;padding:8px 12px;border-radius:6px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>App de Notas</h1>
+    <div class="grid">
+      <div>
+        <textarea id="content" placeholder="Escreva sua nota aqui..."></textarea>
+        <div style="margin-top:8px"><button id="save">Salvar Nota</button></div>
+      </div>
+      <div>
+        <h3>Notas</h3>
+        <ul id="notes"></ul>
+      </div>
+    </div>
+  </div>
+  <script>
+    const STORAGE='evolutnow_notes_v1';
+    function load(){return JSON.parse(localStorage.getItem(STORAGE) || '[]')}
+    function saveAll(notes){localStorage.setItem(STORAGE, JSON.stringify(notes))}
+
+    const contentEl=document.getElementById('content');
+    const notesEl=document.getElementById('notes');
+    const saveBtn=document.getElementById('save');
+
+    function render(){
+      const notes = load();
+      notesEl.innerHTML='';
+      notes.forEach((n,i)=>{
+        const li=document.createElement('li');
+        li.innerHTML = `<span style="flex:1">${n.slice(0,60).replace(/\n/g,' ')}${n.length>60?'...':''}</span><div><button data-i="${i}" class="del">✖</button></div>`;
+        li.addEventListener('click', ()=>{
+          contentEl.value = load()[i];
+        });
+        notesEl.appendChild(li);
+      });
+    }
+
+    saveBtn.addEventListener('click', ()=>{
+      const text = contentEl.value.trim();
+      if(!text) return alert('Escreva algo primeiro.');
+      const notes = load();
+      notes.unshift(text);
+      saveAll(notes);
+      contentEl.value='';
+      render();
+    });
+
+    notesEl.addEventListener('click', e=>{
+      if(e.target.matches('.del')){
+        const i = Number(e.target.dataset.i);
+        const notes = load();
+        notes.splice(i,1);
+        saveAll(notes);
+        render();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>

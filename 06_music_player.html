@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Player de Música</title>
+  <style>
+    body{background:#0b1320;color:#e6eef8;font-family:Inter,Segoe UI,Roboto,sans-serif;padding:24px;display:flex;align-items:center;justify-content:center;height:100vh}
+    .player{max-width:600px;width:100%;background:rgba(255,255,255,0.02);padding:20px;border-radius:12px;text-align:center}
+    input[type=file]{margin-top:12px}
+    button{margin-top:12px;padding:8px 12px;border-radius:6px;border:none;background:#E10600;color:white;cursor:pointer}
+    audio{width:100%;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="player">
+    <h2>Player de Música</h2>
+    <p>Selecione um arquivo de áudio do seu computador (.mp3, .ogg)</p>
+    <input id="file" type="file" accept="audio/*">
+    <div>
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+    </div>
+    <audio id="audio" controls></audio>
+  </div>
+  <script>
+    const fileInput = document.getElementById('file');
+    const audio = document.getElementById('audio');
+    const play = document.getElementById('play');
+    const pause = document.getElementById('pause');
+
+    fileInput.addEventListener('change', ()=>{
+      const f = fileInput.files[0];
+      if(!f) return;
+      const url = URL.createObjectURL(f);
+      audio.src = url;
+      audio.play();
+    });
+    play.addEventListener('click', ()=> audio.play());
+    pause.addEventListener('click', ()=> audio.pause());
+  </script>
+</body>
+</html>

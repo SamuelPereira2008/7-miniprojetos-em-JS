@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>To‑Do List</title>
+  <style>
+    body{background:#071129;color:#e6eef8;font-family:Inter,Segoe UI,Roboto,sans-serif;padding:24px}
+    .app{max-width:720px;margin:0 auto}
+    h1{margin:0 0 12px}
+    form{display:flex;gap:8px;margin-bottom:12px}
+    input[type="text"]{flex:1;padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:inherit}
+    button{padding:10px 14px;border-radius:6px;border:none;background:#E10600;color:white;cursor:pointer}
+    ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+    li{background:rgba(255,255,255,0.03);padding:10px;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>To‑Do List</h1>
+    <form id="form"><input id="input" placeholder="Adicionar tarefa..."><button>Adicionar</button></form>
+    <ul id="list"></ul>
+  </div>
+  <script>
+    const form=document.getElementById('form');
+    const input=document.getElementById('input');
+    const list=document.getElementById('list');
+    const STORAGE_KEY='evolutnow_todos_v1';
+    let todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+    function render(){
+      list.innerHTML='';
+      todos.forEach((t,i)=>{
+        const li=document.createElement('li');
+        li.innerHTML = `<span>${t.text}</span><div><button data-i="${i}" class="rm">✖</button></div>`;
+        list.appendChild(li);
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    }
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const text=input.value.trim();
+      if(!text) return;
+      todos.push({text, done:false});
+      input.value='';
+      render();
+    });
+    list.addEventListener('click', e=>{
+      if(e.target.matches('.rm')){
+        const i = Number(e.target.dataset.i);
+        todos.splice(i,1);
+        render();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>

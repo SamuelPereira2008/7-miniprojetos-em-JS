@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conversor de Moedas</title>
+  <style>
+    body{background:#071129;color:#e6eef8;font-family:Inter,Segoe UI,Roboto,sans-serif;padding:24px;display:flex;align-items:center;justify-content:center;height:100vh}
+    .card{max-width:560px;width:100%;background:rgba(255,255,255,0.02);padding:20px;border-radius:12px}
+    input,select{width:100%;padding:10px;margin-top:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    option{color: black;}
+    button{margin-top:12px;padding:10px;border-radius:6px;border:none;background:#E10600;color:white;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Conversor de Moedas (exemplo)</h2>
+    <p><em>Usa taxas fixas de exemplo. Substitua por uma API real (ex: exchangerate.host) para produção.</em></p>
+    <label>Valor</label>
+    <input id="amount" type="number" value="1" />
+    <label>De</label>
+    <select id="from"><option value="USD">USD</option><option value="EUR">EUR</option><option value="BRL">BRL</option></select>
+    <label>Para</label>
+    <select id="to"><option value="BRL">BRL</option><option value="USD">USD</option><option value="EUR">EUR</option></select>
+    <button id="conv">Converter</button>
+    <div style="margin-top:12px;font-weight:600" id="out">Resultado: -</div>
+  </div>
+  <script>
+    // Example static rates relative to USD
+    const rates = {
+      USD: 1,
+      EUR: 0.92,
+      BRL: 5.2
+    };
+    function convert(amount, from, to){
+      const usd = amount / rates[from];
+      return usd * rates[to];
+    }
+    document.getElementById('conv').addEventListener('click', ()=>{
+      const amount = Number(document.getElementById('amount').value) || 0;
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      const res = convert(amount, from, to);
+      document.getElementById('out').textContent = `Resultado: ${res.toFixed(2)} ${to}`;
+    });
+  </script>
+</body>
+</html>
