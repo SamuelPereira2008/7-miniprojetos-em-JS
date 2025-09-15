@@ -1,2 +1,5 @@
 # 7-miniprojetos-em-JS
-Arquivos do Vídeo de 7 MiniProjetos em JS.
+🎬 Título: 7 MiniProjetos em JavaScript
+
+💻 Código & Assets: https://www.youtube.com/@EvolutNow-Dev
+✉️ Contato: evolutnow.dev@gmail.com
